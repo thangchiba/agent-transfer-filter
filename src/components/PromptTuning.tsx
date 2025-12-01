@@ -42,10 +42,9 @@ export default function PromptTuning({
             type="password"
             value={apiKey}
             onChange={(e) => onApiKeyChange(e.target.value)}
-            placeholder="sk-... or 'doptest'"
+            placeholder="sk-..."
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-800"
           />
-          <p className="text-xs text-gray-500 mt-1">Enter &quot;doptest&quot; to use server API key</p>
         </div>
 
         {/* Model Selection */}
@@ -180,7 +179,7 @@ export default function PromptTuning({
       {/* Legend */}
       <div className="border-t bg-gray-50 p-4">
         <p className="text-xs text-gray-500 text-center">
-          Actions: 📞 transfer_to_operator | 👋 end_call | ➡️ none
+          アクション: 📞 転送 | 👋 終了 | ➡️ なし
         </p>
       </div>
     </div>

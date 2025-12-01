@@ -15,7 +15,9 @@ export default function ChatArea({ settings, apiKey }: ChatAreaProps) {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [conversationEnded, setConversationEnded] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -139,11 +141,23 @@ ${settings.products}
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
+      // Keep focus on input after sending
+      inputRef.current?.focus();
     }
   };
 
+  // Handle IME composition for Japanese input
+  const handleCompositionStart = () => {
+    setIsComposing(true);
+  };
+
+  const handleCompositionEnd = () => {
+    setIsComposing(false);
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    // Only send on Enter when not composing (IME is not active)
+    if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
       e.preventDefault();
       void sendMessage();
     }
@@ -256,13 +270,17 @@ ${settings.products}
       <div className="border-t bg-white p-4">
         <div className="flex gap-3">
           <input
+            ref={inputRef}
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={conversationEnded ? "会話が終了しました" : "メッセージを入力..."}
+            onCompositionStart={handleCompositionStart}
+            onCompositionEnd={handleCompositionEnd}
+            placeholder={conversationEnded ? "会話が終了しました" : "メッセージを入力... (Enterで送信)"}
             className="flex-1 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 disabled:bg-gray-100 disabled:cursor-not-allowed"
             disabled={isLoading || conversationEnded}
+            autoFocus
           />
           <motion.button
             whileHover={{ scale: 1.05 }}
