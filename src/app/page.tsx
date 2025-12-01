@@ -1,65 +1,78 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import ChatArea from '@/components/ChatArea';
+import PromptTuning from '@/components/PromptTuning';
+import { PromptSettings } from '@/types';
+
+const defaultSettings: PromptSettings = {
+  companyName: 'Day One Partner',
+  greetingMessage: '本日は、現在のスマホ料金が最大30%安くなる特別キャンペーンについてご案内しております。\n\n今よりお得になるプランにご興味はございますか？',
+  products: `1) スマホ保険: Basic 4,000円/年(画面割れ1回), Standard 7,000円/年(画面割れ+バッテリー), Premium 12,000円/年(重度故障は本体交換1回).
+2) SIM: Lite 5GB+30分 1,480円/月, Standard 20GB+60分 2,480円/月, Unlimited 無制限 3,980円/月.
+3) 即時修理: 画面12,000〜25,000円, バッテリー6,000円, カメラ9,000円, クリーニング2,000円.
+4) 技術サービス: ロック解除8,000〜20,000円, データ移行3,000円, アプリ最適化1,500円.`,
+  hotDefinition:
+    'strong buying intent or very positive phrases, e.g. 「いいね」「それいい」「導入しようかな」「申し込みたい」「それでお願い」「契約したい」.',
+  warmDefinition:
+    'considering, asking details, comparing plans, e.g. 「もう少し考えたい」「検討中」「他のプランも知りたい」.',
+  coldDefinition:
+    'low/no interest or wants to stop, e.g. 「今はいいかな」「今は時間ないな」「ちょっと興味ないな」「また今度で」「やっぱりやめておきます」.',
+  model: 'gpt-4o',
+};
 
 export default function Home() {
+  const [settings, setSettings] = useState<PromptSettings>(defaultSettings);
+  const [apiKey, setApiKey] = useState('');
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 p-4 md:p-8">
+      {/* Header */}
+      <header className="max-w-7xl mx-auto mb-6">
+        <div className="text-center md:text-left">
+          <h1 className="text-3xl font-bold text-gray-800">
+            🎯 Agent Transfer Filter
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-180px)]">
+          {/* Chat Area - Left Side (2 columns on large screens) */}
+          <div className="lg:col-span-2 h-full min-h-[500px]">
+            <ChatArea settings={settings} apiKey={apiKey} />
+          </div>
+
+          {/* Prompt Tuning - Right Side (1 column on large screens) */}
+          <div className="h-full min-h-[500px]">
+            <PromptTuning
+              settings={settings}
+              onSettingsChange={setSettings}
+              apiKey={apiKey}
+              onApiKeyChange={setApiKey}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="max-w-7xl mx-auto mt-6 text-center text-sm text-gray-500">
+        <p>
+          Built for testing agent classification |
+          <span className="inline-flex items-center gap-1 ml-2">
+            <span className="bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs px-2 py-0.5 rounded-full">
+              HOT
+            </span>
+            <span className="bg-gradient-to-r from-yellow-400 to-amber-500 text-white text-xs px-2 py-0.5 rounded-full">
+              WARM
+            </span>
+            <span className="bg-gradient-to-r from-blue-400 to-cyan-500 text-white text-xs px-2 py-0.5 rounded-full">
+              COLD
+            </span>
+          </span>
+        </p>
+      </footer>
     </div>
   );
 }
