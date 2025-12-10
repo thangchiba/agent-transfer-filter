@@ -6,7 +6,7 @@ import PromptTuning from '@/components/PromptTuning';
 import { PromptSettings } from '@/types';
 
 const defaultSettings: PromptSettings = {
-  companyName: 'Day One Partner',
+  companyName: 'Test Company',
   greetingMessage: '本日は、現在のスマホ料金が最大30%安くなる特別キャンペーンについてご案内しております。\n\n今よりお得になるプランにご興味はございますか？',
   products: `1) スマホ保険: Basic 4,000円/年(画面割れ1回), Standard 7,000円/年(画面割れ+バッテリー), Premium 12,000円/年(重度故障は本体交換1回).
 2) SIM: Lite 5GB+30分 1,480円/月, Standard 20GB+60分 2,480円/月, Unlimited 無制限 3,980円/月.

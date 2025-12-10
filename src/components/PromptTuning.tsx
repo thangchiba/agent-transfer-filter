@@ -91,7 +91,7 @@ export default function PromptTuning({
             type="text"
             value={settings.companyName}
             onChange={(e) => updateSetting('companyName', e.target.value)}
-            placeholder="Day One Partner"
+            placeholder="Enter company name here"
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-800"
           />
         </div>

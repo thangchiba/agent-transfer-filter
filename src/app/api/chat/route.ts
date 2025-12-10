@@ -7,13 +7,13 @@ export async function POST(request: NextRequest) {
 
     // Use environment variable if user enters "doptest" or no API key provided
     let actualApiKey = apiKey;
-    if (!apiKey || apiKey === 'doptest') {
+    if (!apiKey || apiKey === 'testkey') {
       actualApiKey = process.env.OPENAI_API_KEY;
     }
 
     if (!actualApiKey) {
       return NextResponse.json(
-        { error: 'API key is required. Enter your key or "doptest" to use server key.' },
+        { error: 'API key is required. Enter your key or "testkey" to use server key.' },
         { status: 400 }
       );
     }
